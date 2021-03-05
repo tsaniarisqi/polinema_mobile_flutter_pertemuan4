@@ -4,6 +4,7 @@ import 'Input.dart';
 import 'Convert.dart';
 import 'Result.dart';
 import 'riwayatKonversi.dart';
+import 'dropdown.dart';
 
 void main() {
   runApp(MyApp());
@@ -40,6 +41,13 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  void dropdownOnChanged(String changeValue) {
+    setState(() {
+      _newValue = changeValue;
+      _hitungSuhu();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -57,23 +65,7 @@ class _MyAppState extends State<MyApp> {
           child: Column(
             children: [
               Input(etInput: etInput),
-              DropdownButton<String>(
-                // string untuk memberi tipe data value dari dropdown adalah bertipe data string
-                items: listItem.map((String value) {
-                  // untuk iterasi
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-                value: _newValue,
-                onChanged: (String changeValue) {
-                  setState(() {
-                    _newValue = changeValue;
-                    _hitungSuhu();
-                  });
-                },
-              ),
+              DropdownKonversi(listItem: listItem, newValue: _newValue, dropDownOnChanged: dropdownOnChanged),
               Result(result: _result),
               Convert(konvertHandler: _hitungSuhu),
               Container(
@@ -84,6 +76,7 @@ class _MyAppState extends State<MyApp> {
                 ),
               ),
               Expanded(
+                //mengisi ruang kososong
                 child: RiwayatKonversi(listViewItem: listViewItem),
               ),
             ],
@@ -93,3 +86,4 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
+
